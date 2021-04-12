@@ -1,0 +1,11 @@
+*{
+    box-sizing: border-box;
+}
+
+#img-div{
+    width: 100%;
+    text-align: center;
+}
+#img-div img{
+    width: 20%;
+}
