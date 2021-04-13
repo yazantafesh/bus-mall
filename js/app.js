@@ -11,6 +11,13 @@ let leftImageIndex;
 let middleImageIndex;
 let rightImageIndex;
 
+let namesArray=[];
+let votesArray=[];
+let shownArray=[];
+
+let threeImagesArray=[];
+
+
 
 // constructor
 
@@ -21,6 +28,8 @@ function Product(name, path) {
   this.votes=0;
 
   Product.allProducts.push(this);
+
+  namesArray.push(this.name);
 
 }
 
@@ -71,18 +80,26 @@ function renderImages() {
   rightImageIndex=getRandomIndex();
 
 
-  while (leftImageIndex===middleImageIndex || leftImageIndex===rightImageIndex || middleImageIndex===rightImageIndex) {
+  while (leftImageIndex===middleImageIndex || leftImageIndex===rightImageIndex || middleImageIndex===rightImageIndex || threeImagesArray.includes(leftImageIndex) || threeImagesArray.includes(middleImageIndex) || threeImagesArray.includes(rightImageIndex)) {
+    leftImageIndex=getRandomIndex();
     middleImageIndex=getRandomIndex();
     rightImageIndex=getRandomIndex();
   }
+  // console.log(threeImagesArray);
+  threeImagesArray=[];
 
   leftImageElement.src=Product.allProducts[leftImageIndex].path;
-  middleImageElement.src=Product.allProducts[middleImageIndex].path;
-  rightImageElement.src=Product.allProducts[rightImageIndex].path;
-
   Product.allProducts[leftImageIndex].shown++;
+  threeImagesArray.push(leftImageIndex);
+
+  middleImageElement.src=Product.allProducts[middleImageIndex].path;
   Product.allProducts[middleImageIndex].shown++;
+  threeImagesArray.push(middleImageIndex);
+
+  rightImageElement.src=Product.allProducts[rightImageIndex].path;
   Product.allProducts[rightImageIndex].shown++;
+  threeImagesArray.push(rightImageIndex);
+
 }
 
 renderImages();
@@ -125,6 +142,14 @@ function performWhenUserClick(event) {
 
   }else{
 
+    for (let i = 0; i < Product.allProducts.length; i++) {
+      votesArray.push(Product.allProducts[i].votes);
+      shownArray.push(Product.allProducts[i].shown);
+
+    }
+
+    showChart();
+
     buttonElement=document.createElement('button');
     buttonDivElement.appendChild(buttonElement);
     buttonElement.innerHTML='View Results';
@@ -153,3 +178,48 @@ function handleUserClick() {
     buttonElement.removeEventListener('click', handleUserClick);
   }
 }
+
+function showChart() {
+
+  let ctx = document.getElementById('myChart').getContext('2d');
+
+  let chart = new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+      labels: namesArray,
+
+      datasets: [
+        {
+          label: 'Product Votes',
+          data: votesArray,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)'],
+
+          borderWidth: 1
+        },
+        {
+          label: 'Times Shown',
+          data: shownArray,
+          backgroundColor: [
+            'rgba(54, 162, 235, 0.2)',
+          ],
+          borderColor: [
+            'rgba(54, 162, 235, 1)'],
+
+          borderWidth: 1
+        }
+      ]
+    },
+    options: {}
+  });
+
+}
+
+
+
+
