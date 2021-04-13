@@ -115,8 +115,10 @@ function performWhenUserClick(event) {
       Product.allProducts[leftImageIndex].votes++;
     } else if(event.target.id === 'middle-img'){
       Product.allProducts[middleImageIndex].votes++;
-    } else{
+    } else if(event.target.id === 'right-img'){
       Product.allProducts[rightImageIndex].votes++;
+    }else{
+      attemptCounter--;
     }
 
     renderImages();
