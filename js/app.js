@@ -4,7 +4,7 @@ let leftImageElement= document.getElementById('left-img');
 let middleImageElement= document.getElementById('middle-img');
 let rightImageElement= document.getElementById('right-img');
 
-let maxAttempts=25;
+let maxAttempts=10;
 let attemptCounter=0;
 
 let leftImageIndex;
@@ -30,6 +30,7 @@ function Product(name, path) {
   Product.allProducts.push(this);
 
   namesArray.push(this.name);
+
 
 }
 
@@ -105,6 +106,31 @@ function renderImages() {
 renderImages();
 
 
+function updateStorage() {
+
+  let arrayString=JSON.stringify(Product.allProducts);
+
+  let savedData=localStorage.setItem('product', arrayString);
+
+}
+
+
+function getProducts() {
+
+  let data = localStorage.getItem('product');
+
+  let productData = JSON.parse(data);
+  // console.log(productData);
+
+  if (data) {
+    Product.allProducts=productData;
+  }
+}
+
+
+
+
+
 
 
 let buttonDivElement=document.getElementById('button');
@@ -149,7 +175,7 @@ function performWhenUserClick(event) {
     }
 
     showChart();
-
+    updateStorage();
     buttonElement=document.createElement('button');
     buttonDivElement.appendChild(buttonElement);
     buttonElement.innerHTML='View Results';
@@ -220,6 +246,6 @@ function showChart() {
 
 }
 
-
+getProducts();
 
 
